@@ -3,7 +3,7 @@ var colors = [];
 var pickedColor;
 var squares = document.querySelectorAll(".square");
 var colorDisplay = document.getElementById("colorDisplay");
-var messageDisplay = document.querySelector("#message");
+var messageDisplay = document.querySelector(".message");
 var h1 = document.querySelector("h1");
 var buttonReset = document.querySelector(".reset");
 var modeButtons = document.querySelectorAll(".mode");
@@ -13,21 +13,25 @@ init();
 function init () {
 	//mode buttons for event listeners
 	setUpModeButtons();
+	//squares listeners
+	setUpSquares();
+	reset();		
+}
+
+function setUpModeButtons() {
 	for (var i = 0; i < modeButtons.length; i++) {
 		modeButtons[i].addEventListener("click", function() {
 			modeButtons[0].classList.remove("selected");
 			modeButtons[1].classList.remove("selected");
-
 			this.classList.add("selected");
-
 			this.textContent === "Easy" ? numSquares = 3 : numSquares = 6;
-
 			//use reset function for new generation
 			reset();
 		});
-	}
+	};
+}
 
-	//squares listeners
+function setUpSquares() {
 	for(var i = 0; i < squares.length; i++) {
 		//set event listeners
 		squares[i].addEventListener("click", function(){
@@ -35,36 +39,20 @@ function init () {
 			var clickedColor = this.style.background;
 			//compare color to pickedColor
 			if (clickedColor === pickedColor) {
-				messageDisplay.textContent = "Correct!";
+				messageDisplay.textContent = "CORRECT!";
 				buttonReset.textContent = "Play Again?"
 				changeSameColor(pickedColor);
 				h1.style.background = clickedColor;
 			} else {
 				this.style.background = "#232323";
-				messageDisplay.textContent = "try again";
+				messageDisplay.textContent = "Try Again!";
+				setTimeout(function(){ 
+					messageDisplay.textContent = ""; 
+				}, 2200);
 			}
-		})
-	}
-
-	reset();		
-
+		});
+	};	
 }
-
-
-
-// for (var i = 0; i < modeButtons.length; i++) {
-// 	modeButtons[i].addEventListener("click", function() {
-// 		modeButtons[0].classList.remove("selected");
-// 		modeButtons[1].classList.remove("selected");
-
-// 		this.classList.add("selected");
-
-// 		this.textContent === "Easy" ? numSquares = 3 : numSquares = 6;
-
-// 		//use reset function for new generation
-// 		reset();
-// 	});
-// }
 
 function reset() {
 	//generate all new colors
@@ -77,7 +65,6 @@ function reset() {
 	messageDisplay.textContent = "";
 	//change play again back to "new colors"
 	buttonReset.textContent = "New Colors";
-
 	//change color squares
 	for (var i = 0; i < squares.length; i++) {
 		if (colors[i]) {
@@ -87,62 +74,12 @@ function reset() {
 			squares[i].style.display = "none";
 		}
 	}
-
 	h1.style.background = "steelblue";
-
 }
-
-// easyBtn.addEventListener("click", function(){
-// 	easyBtn.classList.add("selected");
-// 	hardBtn.classList.remove("selected");
-// 	numSquares = 3;
-// 	colors = generateRandomColors(numSquares);
-// 	pickedColor = pickColor();
-// 	colorDisplay.textContent = pickedColor;
-// 	for (var i = 0; i < squares.length; i++) {
-// 		if (colors[i]) {
-// 			squares[i].style.background = colors[i];
-// 		} else {
-// 			squares[i].style.display = "none";
-// 		}
-// 	}
-
-// });
-
-// hardBtn.addEventListener("click", function(){
-// 	hardBtn.classList.add("selected");
-// 	easyBtn.classList.remove("selected");
-// 	numSquares = 6;
-// 	colors = generateRandomColors(numSquares);
-// 	pickedColor = pickColor();
-// 	colorDisplay.textContent = pickedColor;
-// 	for (var i = 0; i < squares.length; i++) {
-// 		squares[i].style.background = colors[i];
-// 		squares[i].style.display = "block";
-// 	}	
-// })
-
 
 
 buttonReset.addEventListener("click", function() {
-	//generate all new colors
-	colors = generateRandomColors(numSquares);
-	//pick new random color from array
-	pickedColor = pickColor();
-	//change colorDisplay to match picked color
-	colorDisplay.textContent = pickedColor;
-	//change previous text to empty
-	messageDisplay.textContent = "";
-	//change play again back to "new colors"
-	this.textContent = "New Colors";
-
-	//change color squares
-	for (var i = 0; i < squares.length; i++) {
-		squares[i].style.background = colors[i];
-	}
-
-	h1.style.background = "steelblue";
-	
+	reset();
 });
 
 function changeSameColor(color){
