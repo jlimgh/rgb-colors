@@ -46,9 +46,6 @@ function setUpSquares() {
 			} else {
 				this.style.background = "#232323";
 				messageDisplay.textContent = "Try Again!";
-				setTimeout(function(){ 
-					messageDisplay.textContent = ""; 
-				}, 2200);
 			}
 		});
 	};	
